@@ -7,7 +7,8 @@ jobs:
     - uses: actions/checkout@master
     
     - name: Set service account context
-      run: |        
+      run: |
+        kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority "DSFSDFDSFDSFSDFSDF"
         kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
         #kubectl config set-context --current --user=github-actions
         kubectl config view
