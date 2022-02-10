@@ -12,6 +12,10 @@ jobs:
         kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
         kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
         kubectl config use-context github-actions@proen-kubeops
+
+    - name: Test
+      run: |
+        echo "$KUBECONFIG"
         
     # - name: Test KubeCtl
     #   run: |
