@@ -1,0 +1,1 @@
+# man-github-actions-cd
