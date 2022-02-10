@@ -8,7 +8,9 @@ jobs:
     
     - name: Set service account context
       run: |
-        kubectl version
+        kubectl config view
+#        kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
+#        kubectl config set-context --current --user=github-actions
 
 # jobs:
 #   build:
