@@ -1,20 +1,27 @@
 on: [push]
 
 jobs:
-  build:
+  configuration:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    # - uses: actions/checkout@master
     
-    - name: Set service account context
+    - name: Config kubectl
       run: |
         kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
         kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
         kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
         kubectl config use-context github-actions@proen-kubeops
         
+    # - name: Test KubeCtl
+    #   run: |
+    #     kubectl get deployments
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
     - name: Test KubeCtl
       run: |
         kubectl get deployments
-
 
