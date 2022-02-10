@@ -13,6 +13,11 @@ jobs:
         kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
         kubectl config use-context github-actions@proen-kubeops
 
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
     - name: Install Krane
       run: gem install krane
 
