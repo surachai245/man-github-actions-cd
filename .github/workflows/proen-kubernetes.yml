@@ -1,8 +1,8 @@
 on: [push]
 
 jobs:
-  configuration:
-    runs-on: ubuntu-latest
+  Deploy:
+    runs-on: ubuntu-20.04
     steps:
     # - uses: actions/checkout@master
     
@@ -13,9 +13,12 @@ jobs:
         kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
         kubectl config use-context github-actions@proen-kubeops
 
-    - name: Test
-      run: |
-        cat ~/.kube/config
+    - name: Install Krane
+      run: gem install krane
+
+    # - name: Test
+    #   run: |
+    #     cat ~/.kube/config
         
   #   # - name: Test KubeCtl
   #   #   run: |
