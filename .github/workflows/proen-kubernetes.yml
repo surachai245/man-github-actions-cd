@@ -15,17 +15,17 @@ jobs:
 
     - name: Test
       run: |
-        echo $KUBECONFIG
+        cat ~/.kube/config
         
-    # - name: Test KubeCtl
-    #   run: |
-    #     kubectl get deployments
+  #   # - name: Test KubeCtl
+  #   #   run: |
+  #   #     kubectl get deployments
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-    - name: Test KubeCtl
-      run: |
-        kubectl get deployments
+  #   - name: Test KubeCtl
+  #     run: |
+  #       kubectl get deployments
 
