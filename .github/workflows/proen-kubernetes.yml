@@ -13,6 +13,7 @@ jobs:
         kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
         kubectl config use-context github-actions@proen-kubeops
         kubectl config view
+        kubectl cluster-info
 
 # jobs:
 #   build:
