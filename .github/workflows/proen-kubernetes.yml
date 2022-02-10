@@ -15,7 +15,7 @@ jobs:
 
     - name: Test
       run: |
-        echo "$KUBECONFIG"
+        echo $KUBECONFIG
         
     # - name: Test KubeCtl
     #   run: |
