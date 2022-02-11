@@ -21,16 +21,16 @@ jobs:
         kubectl config use-context github-actions@proen-kubeops
         kubectl version
 
-    # - uses: ruby/setup-ruby@v1
-    #   with:
-    #     ruby-version: 2.7
-    #     bundler-cache: true
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
 
-    # - name: Install Krane
-    #   run: gem install krane
+    - name: Install Krane
+      run: gem install krane
 
-    # - name: Deploy with krane
-    #   run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
+    - name: Deploy with krane
+      run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
 
     # - name: Test
     #   run: |
