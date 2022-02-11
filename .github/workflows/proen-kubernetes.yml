@@ -8,13 +8,9 @@ jobs:
 
     - name: curl the wanted version
       run: |
-        which kubectl
-        ls /opt/
-        cd /opt/
         curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
-        ls /opt/
-        chmod +x /opt/kubectl
-        /opt/kubectl version
+        chmod +x ./kubectl
+        ./kubectl version
     
     #ls /usr/local/bin/
 
