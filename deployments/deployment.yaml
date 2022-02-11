@@ -1,19 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: man-nginx
   name: man-nginx
 spec:
-  replicas: 2
+  replicas: 100
   selector:
     matchLabels:
       app: man-nginx
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: man-nginx
     spec:
