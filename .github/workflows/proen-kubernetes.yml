@@ -11,7 +11,7 @@ jobs:
         curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
         pwd
         ls /home/runner/work/man-github-actions-cd/man-github-actions-cd
-        ./kubectl version
+        /home/runner/work/man-github-actions-cd/man-github-actions-cd/kubectl version
     
     - name: Config kubectl
       run: |
