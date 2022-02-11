@@ -22,7 +22,7 @@ jobs:
       run: gem install krane
 
     - name: Deploy with krane
-      run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
+      run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune --verbose-log-prefix
 
     # - name: Test
     #   run: |
