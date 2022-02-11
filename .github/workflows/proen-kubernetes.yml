@@ -5,6 +5,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@master
+
+    - name: curl the wanted version
+      run: |
+        curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
+        ./kubectl version
     
     - name: Config kubectl
       run: |
@@ -17,7 +22,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
-        # bundler-cache: true
+        bundler-cache: true
 
     - name: Install Krane
       run: gem install krane
