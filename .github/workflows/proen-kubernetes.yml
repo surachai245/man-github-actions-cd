@@ -9,6 +9,7 @@ jobs:
     - name: curl the wanted version
       run: |
         curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
+        pwd
         ./kubectl version
     
     - name: Config kubectl
