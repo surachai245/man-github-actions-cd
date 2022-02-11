@@ -9,6 +9,7 @@ jobs:
     - name: curl the wanted version
       run: |
         which kubectl
+        ls /usr/local/bin/
     
     - name: Config kubectl
       run: |
@@ -26,8 +27,8 @@ jobs:
     - name: Install Krane
       run: gem install krane
 
-    - name: Deploy with krane
-      run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
+    # - name: Deploy with krane
+    #   run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
 
     # - name: Test
     #   run: |
