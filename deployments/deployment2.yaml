@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: man-nginx2
-  name: man-nginx2
+    app: man-nginx-2
+  name: man-nginx-2
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: man-nginx2
+      app: man-nginx-2
   strategy: {}
   template:
     metadata:
       labels:
-        app: man-nginx2
+        app: man-nginx-2
     spec:
       containers:
       - image: nginx
