@@ -4,7 +4,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-20.04
     steps:
-    # - uses: actions/checkout@master
+    - uses: actions/checkout@master
     
     - name: Config kubectl
       run: |
@@ -20,6 +20,9 @@ jobs:
 
     - name: Install Krane
       run: gem install krane
+
+    - name: Deploy with krane
+      run: krane deploy default kubernetes-admin@kubernetes -f ./deployments/ --no-prune
 
     # - name: Test
     #   run: |

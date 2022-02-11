@@ -6,7 +6,7 @@ metadata:
     app: man-nginx2
   name: man-nginx2
 spec:
-  replicas: 1
+  replicas: 8
   selector:
     matchLabels:
       app: man-nginx2
