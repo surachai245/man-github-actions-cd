@@ -6,24 +6,20 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: curl the wanted version
+    - name: Install kubectl v.1.22.4
       run: |
         curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
         chmod +x ./kubectl
         rm /usr/local/bin/kubectl
         mv ./kubectl /usr/local/bin/
-        kubectl --version
 
-    
-    #ls /usr/local/bin/
-
-    # - name: Config kubectl
-    #   run: |
-    #     kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
-    #     kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
-    #     kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
-    #     kubectl config use-context github-actions@proen-kubeops
-    #     kubectl version
+    - name: Config kubectl
+      run: |
+        kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
+        kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
+        kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
+        kubectl config use-context github-actions@proen-kubeops
+        kubectl version
 
     # - uses: ruby/setup-ruby@v1
     #   with:
