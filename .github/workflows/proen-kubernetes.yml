@@ -9,24 +9,29 @@ jobs:
     - name: curl the wanted version
       run: |
         which kubectl
-        ls /usr/local/bin/
         ls /opt/
+        cd /opt/
+        curl -LO "https://dl.k8s.io/release/v1.22.4/bin/linux/amd64/kubectl"
+        ls /opt/
+        /opt/kubectl version
     
-    - name: Config kubectl
-      run: |
-        kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
-        kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
-        kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
-        kubectl config use-context github-actions@proen-kubeops
-        kubectl version
+    #ls /usr/local/bin/
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7
-        bundler-cache: true
+    # - name: Config kubectl
+    #   run: |
+    #     kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
+    #     kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
+    #     kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
+    #     kubectl config use-context github-actions@proen-kubeops
+    #     kubectl version
 
-    - name: Install Krane
-      run: gem install krane
+    # - uses: ruby/setup-ruby@v1
+    #   with:
+    #     ruby-version: 2.7
+    #     bundler-cache: true
+
+    # - name: Install Krane
+    #   run: gem install krane
 
     # - name: Deploy with krane
     #   run: krane deploy default github-actions@proen-kubeops -f ./deployments/ --no-prune
