@@ -4,6 +4,9 @@ metadata:
   creationTimestamp: null
   name: deployer
 rules:
-- apiGroups: ["", "apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list"]
+# - apiGroups: ["", "apps"]
+#   resources: ["deployments"]
+#   verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["list"]
