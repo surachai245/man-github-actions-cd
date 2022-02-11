@@ -3,11 +3,12 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: deployer
+  namespace: prod
 rules:
 - apiGroups: ["", "apps"]
   resources: ["deployments"]
   verbs: ["get", "list", "patch", "watch", "update", "create", "delete"]
 
 - apiGroups: [""]
-  resources: ["namespaces"]
+  resources: ["namespaces", "secrets"]
   verbs: ["get", "list", "patch", "watch", "update", "create", "delete"]

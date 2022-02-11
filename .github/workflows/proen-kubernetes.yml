@@ -30,7 +30,7 @@ jobs:
       run: gem install krane
 
     - name: Deploy with krane
-      run: krane deploy prod github-actions@proen-kubeops -f ./deployments/
+      run: krane deploy prod github-actions@proen-kubeops -f ./deployments/ --no-prune
 
     # - name: Test
     #   run: |
