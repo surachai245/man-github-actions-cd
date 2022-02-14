@@ -1,4 +1,9 @@
-on: [push]
+name: Deploy to Kubenertes Cluster
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   Deploy:
@@ -15,36 +20,19 @@ jobs:
 
     - name: Config kubectl
       run: |
-        kubectl config set-cluster proen-kubeops --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
+        kubectl config set-cluster kubernetes --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
         kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
-        kubectl config set-context github-actions@proen-kubeops --user=github-actions --cluster=proen-kubeops
-        kubectl config use-context github-actions@proen-kubeops
+        kubectl config set-context github-actions@kubernetes --user=github-actions --cluster=kubernetes
+        kubectl config use-context github-actions@kubernetes
         kubectl version
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.0
+        ruby-version: 2.7.5
         bundler-cache: true
 
     - name: Install Krane
       run: gem install krane
 
     - name: Deploy with krane
-      run: krane deploy prod github-actions@proen-kubeops -f ./deployments/ --no-prune
-
-    # - name: Test
-    #   run: |
-    #     cat ~/.kube/config
-        
-  #   # - name: Test KubeCtl
-  #   #   run: |
-  #   #     kubectl get deployments
-
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-
-  #   - name: Test KubeCtl
-  #     run: |
-  #       kubectl get deployments
-
+      run: krane deploy production github-actions@kubernetes -f ./manifests/deployments/ --no-prune

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: man-nginx-1
   name: man-nginx-1
-  namespace: prod
+  namespace: production
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,8 @@ spec:
         app: man-nginx-1
     spec:
       containers:
-      - image: nginx
-        name: nginx
-        resources: {}
+      - name: plainfatboy
+        image: kubesuperops.azurecr.io/kubeops/ms-1:v1
+      imagePullSecrets:
+      - name: acr-cred
 status: {}
