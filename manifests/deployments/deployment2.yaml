@@ -5,7 +5,7 @@ metadata:
   labels:
     app: man-nginx-2
   name: man-nginx-2
-  namespace: prod
+  namespace: production
 spec:
   replicas: 1
   selector:
