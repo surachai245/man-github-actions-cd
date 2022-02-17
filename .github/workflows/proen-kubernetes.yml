@@ -20,8 +20,7 @@ jobs:
 
     - name: Config kubectl
       run: |
-        kubectl config set-cluster kubernetes --server ${{ secrets.KUBE_CLUSTER_SERVER }} \
-          --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
+        kubectl config set-cluster kubernetes --server ${{ secrets.KUBE_CLUSTER_SERVER }} --embed-certs --certificate-authority <(echo "${{ secrets.KUBE_CLUSTER_CERTIFICATE_AUTHORITY_DATA }}")
         kubectl config set-credentials github-actions --token=${{ secrets.ACTIONS_SA_TOKEN }}
         kubectl config set-context github-actions@kubernetes --user=github-actions --cluster=kubernetes
         kubectl config use-context github-actions@kubernetes
