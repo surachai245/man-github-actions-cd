@@ -1,0 +1,36 @@
+name: Build kubeops-ng project
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build-kubeops-ng:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.10
+        with:
+          versionSpec: '5.x'
+
+      - name: Execute GitVersion
+        uses: gittools/actions/gitversion/execute@v0.9.10
+        with:
+          useConfigFile: true
+          targetPath: ./kubeops-ng
+
+      - name: Display SemVer
+        run: |
+          echo "SemVer: $GITVERSION_SEMVER"
+
+      # ============= ENC Login Container registry and init git semver ==========
+      # ============= Build and puch to registry ================================
+      - name: Build and push to registry
+        run: |
+          cd kubeops-ng
+          docker build -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER \
+                       -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest \
+                       --build-arg build_env=${{ env.ENVIRONMENT }} .
+          docker push -a ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}
