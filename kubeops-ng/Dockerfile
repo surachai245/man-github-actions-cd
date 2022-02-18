@@ -1,6 +1,6 @@
 FROM node:lts-alpine AS builder
 WORKDIR /usr/src/app
-RUN npm -i
+RUN npm install
 RUN ng build --aot --output-hashing=all
 
 
