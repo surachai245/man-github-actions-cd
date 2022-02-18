@@ -20,6 +20,7 @@ jobs:
         with:
           useConfigFile: true
           targetPath: ./kubeops-ng
+          configFilePath: ./kubeops-ng/GitVersion.yml
 
       - name: Display SemVer
         run: |
