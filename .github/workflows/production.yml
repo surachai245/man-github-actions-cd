@@ -93,6 +93,7 @@ jobs:
           path: version
           
   deployment-job:
+    name: Continuous Deployment
     runs-on: ubuntu-20.04
     needs:
       - build-kubeops-ng
