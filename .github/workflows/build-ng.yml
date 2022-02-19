@@ -18,7 +18,6 @@ jobs:
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
         with:
-          scan-ref: ./kubeops-ng
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'sarif'
