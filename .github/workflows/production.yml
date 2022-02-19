@@ -12,30 +12,30 @@ env:
 
 jobs:
   
-  scan-valner:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
+  # scan-valner:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL'
+  #     - name: Run Trivy vulnerability scanner in repo mode
+  #       uses: aquasecurity/trivy-action@master
+  #       with:
+  #         scan-type: 'fs'
+  #         ignore-unfixed: true
+  #         format: 'sarif'
+  #         output: 'trivy-results.sarif'
+  #         severity: 'CRITICAL'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: 'trivy-results.sarif'
+  #     - name: Upload Trivy scan results to GitHub Security tab
+  #       uses: github/codeql-action/upload-sarif@v1
+  #       with:
+  #         sarif_file: 'trivy-results.sarif'
 
   build-kubeops-ng:
     name: Continuous Integration
     runs-on: ubuntu-20.04
-    needs:
-      - scan-valner
+    # needs:
+    #   - scan-valner
     steps:
       - uses: actions/checkout@v2
         with:
@@ -86,6 +86,7 @@ jobs:
       - name: Update deployment manifests
         run: |
           cd manifests/deployments
+          echo $GITVERSION_SEMVER
           yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER"' deployment.yaml
 
       - name: Test
