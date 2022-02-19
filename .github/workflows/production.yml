@@ -85,14 +85,12 @@ jobs:
 
       - name: Update deployment manifests
         run: |
-          cd manifests/deployments
-          echo $GITVERSION_SEMVER
-          yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:${{ echo "TEST" }}"' deployment.yaml
+          echo $GITVERSION_SEMVER > version
 
-      - name: Test
-        run: |
-          cd manifests/deployments
-          cat deployment.yaml
+      - uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version
           
   deployment-job:
     runs-on: ubuntu-20.04
@@ -100,3 +98,11 @@ jobs:
       - build-kubeops-ng
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: version
+
+      - name: Test
+        run: |
+          cat version
