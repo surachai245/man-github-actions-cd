@@ -64,13 +64,13 @@ jobs:
         run: |
           echo "SemVer: $GITVERSION_SEMVER"
 
-      - name: Build and push to registry
-        run: |
-          cd kubeops-ng
-          docker build -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER \
-                       -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest \
-                       --build-arg build_env=${{ env.ENVIRONMENT }} .
-          docker push -a ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}
+      # - name: Build and push to registry
+      #   run: |
+      #     cd kubeops-ng
+      #     docker build -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER \
+      #                  -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest \
+      #                  --build-arg build_env=${{ env.ENVIRONMENT }} .
+      #     docker push -a ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}
 
       # ============== End Build =================================================
       - name: Run Trivy vulnerability scanner
@@ -86,7 +86,7 @@ jobs:
       - name: Update deployment manifests
         run: |
           cd manifests/deployments
-          yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER"' deployment.yaml
+          yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:{$GITVERSION_SEMVER}"' deployment.yaml
 
       - name: Test
         run: |
