@@ -60,3 +60,9 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+  deployment-job:
+    runs-on: ubuntu-20.04
+    needs:
+      - build-kubeops-ng
+    steps:
+      - uses: actions/checkout@v2
