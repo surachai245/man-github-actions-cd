@@ -12,30 +12,30 @@ env:
 
 jobs:
   
-  # scan-valner:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
+  scan-valner:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
 
-  #     - name: Run Trivy vulnerability scanner in repo mode
-  #       uses: aquasecurity/trivy-action@master
-  #       with:
-  #         scan-type: 'fs'
-  #         ignore-unfixed: true
-  #         format: 'sarif'
-  #         output: 'trivy-results.sarif'
-  #         severity: 'CRITICAL'
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
 
-  #     - name: Upload Trivy scan results to GitHub Security tab
-  #       uses: github/codeql-action/upload-sarif@v1
-  #       with:
-  #         sarif_file: 'trivy-results.sarif'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
 
   build-kubeops-ng:
     name: Continuous Integration
     runs-on: ubuntu-20.04
-    # needs:
-    #   - scan-valner
+    needs:
+      - scan-valner
     steps:
       - uses: actions/checkout@v2
         with:
@@ -64,26 +64,26 @@ jobs:
         run: |
           echo "SemVer: $GITVERSION_SEMVER"
 
-      # - name: Build and push to registry
-      #   run: |
-      #     cd kubeops-ng
-      #     docker build -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER \
-      #                  -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest \
-      #                  --build-arg build_env=${{ env.ENVIRONMENT }} .
-      #     docker push -a ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}
+      - name: Build and push to registry
+        run: |
+          cd kubeops-ng
+          docker build -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER \
+                       -t ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest \
+                       --build-arg build_env=${{ env.ENVIRONMENT }} .
+          docker push -a ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}
 
       # ============== End Build =================================================
-      # - name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest
-      #     format: 'table'
-      #     exit-code: '0'
-      #     ignore-unfixed: true
-      #     vuln-type: 'os,library'
-      #     severity: 'CRITICAL,HIGH'
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:latest
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
-      - name: Update deployment manifests
+      - name: Upload version artifact
         run: |
           echo $GITVERSION_SEMVER > version
 
@@ -99,14 +99,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - name: Download version artifact
+        uses: actions/download-artifact@v2
         with:
           name: version
 
-      - name: Test
+      - name: Update deployment manifest
         run: |
           export VERSION=$(cat version)
-          echo $VERSION
           cd ./manifests/deployments/
           IMAGENAME=${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$VERSION yq -i '.spec.template.spec.containers[0].image = env(IMAGENAME)' deployment.yaml
+
+      - name: Check manifest content
+        run: |
+          cd ./manifests/deployments/
           cat deployment.yaml
