@@ -10,8 +10,27 @@ env:
   REGISTRY: 'kubesuperops.azurecr.io'
 
 jobs:
+  scan-valner:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
+
   build-kubeops-ng:
     runs-on: ubuntu-20.04
+    needs:
+      - scan-valner
     steps:
       - uses: actions/checkout@v2
         with:
