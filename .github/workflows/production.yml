@@ -109,6 +109,6 @@ jobs:
           echo $VERSION
           cd ./manifests/deployments/
           export IMAGENAME=${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$VERSION
-          echo IMAGENAME
-          yq -i '.spec.template.spec.containers[0].image = "$IMAGENAME"' deployment.yaml
+          echo $IMAGENAME
+          yq -i '.spec.template.spec.containers[0].image = "${{ env.IMAGENAME }}"' deployment.yaml
           cat deployment.yaml
