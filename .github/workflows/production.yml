@@ -105,4 +105,5 @@ jobs:
 
       - name: Test
         run: |
-          cat version
+          export VERSION=$(cat version)
+          echo $VERSION
