@@ -87,6 +87,11 @@ jobs:
         run: |
           cd manifests/deployments
           yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:$GITVERSION_SEMVER"' deployment.yaml
+
+      - name: Test
+        run: |
+          cd manifests/deployments
+          cat deployment.yaml
           
   deployment-job:
     runs-on: ubuntu-20.04
