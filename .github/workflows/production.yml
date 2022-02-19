@@ -86,7 +86,7 @@ jobs:
       - name: Update deployment manifests
         run: |
           cd manifests/deployments
-          yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:{$GITVERSION_SEMVER}"' deployment.yaml
+          yq -i '.spec.template.spec.containers[0].image = "${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWERCASE }}/${{ env.IMAGE_NAME }}:${{ $GITVERSION_SEMVER }}"' deployment.yaml
 
       - name: Test
         run: |
